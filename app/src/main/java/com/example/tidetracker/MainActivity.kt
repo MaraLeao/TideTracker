@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        fetchMarineWeatherData(-7.115, -34.882) // Coordenadas da praia de Tambaú
+        fetchMarineWeatherData(-7.115, -34.882) // Praia de Tambaú coordenadas
     }
 
     private fun fetchMarineWeatherData(latitude : Double, longitude: Double) {
@@ -45,9 +45,8 @@ class MainActivity : AppCompatActivity() {
                             val seaLevel = it.hourly.sea_level_height_msl
                             val sst = it.hourly.sea_surface_temperature
 
-                            // Check if we have valid data
                             if (time.isNotEmpty()) {
-                                var hasValidData = false // Declarar ANTES do loop
+                                var hasValidData = false
 
                                 for (i in time.indices) {
                                     val timeValue = time[i]
@@ -56,7 +55,6 @@ class MainActivity : AppCompatActivity() {
                                     val seaLevelValue = seaLevel?.getOrNull(i)
                                     val sstValue = sst?.getOrNull(i)
 
-                                    // Check if at least one value is not null
                                     if (waveHeightValue != null || wavePeriodValue != null ||
                                         seaLevelValue != null || sstValue != null) {
                                         hasValidData = true
@@ -71,7 +69,6 @@ class MainActivity : AppCompatActivity() {
                                     )
                                 }
 
-                                // Agora o if/else funciona porque hasValidData está no escopo correto
                                 if (!hasValidData) {
                                     Log.w("MainActivity", "No valid marine data available for this location")
                                     Handler(Looper.getMainLooper()).post {
@@ -81,19 +78,18 @@ class MainActivity : AppCompatActivity() {
                                     }
                                 } else {
                                     Log.d("MainActivity", "Valid marine data found!")
-                                    // Aqui você pode processar os dados válidos
                                 }
                             } else {
                                 Log.w("MainActivity", "No time data received")
                             }
                         }
                     } else {
-                        Log.e("MainActivity", "Erro na resposta: ${response.code()}")
+                        Log.e("MainActivity", "Response error: ${response.code()}")
                     }
                 }
 
                 override fun onFailure(call: Call<MarineWeatherResponse>, t: Throwable) {
-                    Log.e("MainActivity", "Erro na chamada da API", t)
+                    Log.e("MainActivity", "API call error", t)
                 }
             })
     }
