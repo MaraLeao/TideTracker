@@ -1,13 +1,13 @@
 package com.example.tidetracker
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var surfaceTempTextView: TextView
     private lateinit var latitudeTextView: TextView
     private lateinit var longitudeTextView: TextView
+    private lateinit var name: TextView
 
     private lateinit var chartSeaLevel: LineChart
     private lateinit var chartWaveHeight: LineChart
@@ -40,8 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var updateHandler: Handler
     private lateinit var updateRunnable: Runnable
-    private lateinit var latitude_input: EditText
-    private lateinit var longitude_input: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,19 +57,31 @@ class MainActivity : AppCompatActivity() {
         surfaceTempTextView = findViewById(R.id.surface_temperature_TextView)
         latitudeTextView = findViewById(R.id.latitude_textView)
         longitudeTextView = findViewById(R.id.longitude_textView)
+        name = findViewById(R.id.name_local)
         chartSeaLevel = findViewById(R.id.chart_sea_level)
         chartWaveHeight = findViewById(R.id.chart_wave_height)
         chartSST = findViewById(R.id.chart_sst)
+        val button_menu = findViewById<ImageButton>(R.id.btn_menu)
+        val latitude = intent.getDoubleExtra("latitude", -7.115)
+        val longitude = intent.getDoubleExtra("longitude", -34.882)
+        val localName = intent.getStringExtra("name") ?: "Praia de Tambaú"
 
-        fetchMarineWeatherData(-7.115, -34.882) // Praia de Tambaú coordenadas
-        setupPeriodicUpdate()
+        name.text = localName
+
+        fetchMarineWeatherData(latitude, longitude)
+        setupPeriodicUpdate(latitude, longitude)
+
+        button_menu.setOnClickListener {
+            val intent = Intent(this, LocalsActivity::class.java)
+            startActivity(intent)
+        }
     }
 
-    private fun setupPeriodicUpdate() {
+    private fun setupPeriodicUpdate(latitude: Double, longitude: Double) {
         updateHandler = Handler(Looper.getMainLooper())
         updateRunnable = object : Runnable {
             override fun run() {
-                fetchMarineWeatherData(-7.115, -34.882)
+                fetchMarineWeatherData(latitude, longitude)
 
                 updateHandler.postDelayed(this, 3600000)
             }
@@ -101,12 +112,12 @@ class MainActivity : AppCompatActivity() {
                             val currentSeaLevel = seaLevel?.firstOrNull()
                             val currentSST = sst?.firstOrNull()
 
-                            waveHeightTextView.text = "${currentWaveHeight ?: "N/A"}"
-                            wavePeriodTextView.text = "${currentWavePeriod ?: "N/A"}"
-                            seaLevelHeightTextView.text = "${currentSeaLevel ?: "N/A"}"
-                            surfaceTempTextView.text = "${currentSST ?: "N/A"}"
+                            waveHeightTextView.text = "${currentWaveHeight ?: "N/A"} m"
+                            wavePeriodTextView.text = "${currentWavePeriod ?: "N/A"} s"
+                            seaLevelHeightTextView.text = "${currentSeaLevel ?: "N/A"} m"
+                            surfaceTempTextView.text = "${currentSST ?: "N/A"} °C"
 
-                            updateChart(time, waveHeight, wavePeriod, seaLevel, sst)
+                            updateChart(time, waveHeight, seaLevel, sst)
                         }
                     } else {
                         Log.e("MainActivity", "Response error: ${response.code()}")
@@ -122,125 +133,137 @@ class MainActivity : AppCompatActivity() {
     private fun updateChart(
         time: List<String>,
         waveHeight: List<Double>?,
-        wavePeriod: List<Double>?,
         seaLevel: List<Double>?,
         sst: List<Double>?
     ) {
-        // Formatar horários para exibição (apenas hora:minuto)
-        val timeLabels = time.map { timeString ->
-            try {
-                val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
-                val outputFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
-                val date = inputFormat.parse(timeString)
-                outputFormat.format(date ?: Date())
-            } catch (e: Exception) {
-                timeString.substring(11, 16) // Pegar apenas HH:mm
-            }
-        }
 
-        // Atualizar gráfico de altura das ondas
-        waveHeight?.let { updateWaveHeightChart(timeLabels, it) }
+        waveHeight?.let { updateWaveHeightChart(time, it) }
 
-        // Atualizar gráfico de nível do mar
-        seaLevel?.let { updateSeaLevelChart(timeLabels, it) }
+        seaLevel?.let { updateSeaLevelChart(time, it) }
 
-        // Atualizar gráfico de temperatura da superfície do mar
-        sst?.let { updateSSTChart(timeLabels, it) }
+        sst?.let { updateSSTChart(time, it) }
     }
 
-    private fun updateWaveHeightChart(timeLabels: List<String>, waveHeight: List<Double>) {
+    private fun updateWaveHeightChart(time: List<String>, waveHeight: List<Double>) {
         val entries = waveHeight.mapIndexed { index, value ->
             Entry(index.toFloat(), value.toFloat())
         }
 
         val dataSet = LineDataSet(entries, "Altura das Ondas (m)")
         dataSet.color = Color.parseColor("#2196F3") // Azul
-        dataSet.setCircleColor(Color.parseColor("#2196F3"))
         dataSet.lineWidth = 3f
         dataSet.circleRadius = 4f
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#2196F3")
         dataSet.fillAlpha = 30
         dataSet.valueTextSize = 10f
+        dataSet.setDrawCircles(false)
 
         val lineData = LineData(dataSet)
         chartWaveHeight.data = lineData
 
-        setupChart(chartWaveHeight, timeLabels, "Altura das Ondas (m)")
+        setupChart(chartWaveHeight, time)
     }
 
-    private fun updateSeaLevelChart(timeLabels: List<String>, seaLevel: List<Double>) {
+    private fun updateSeaLevelChart(time: List<String>, seaLevel: List<Double>) {
         val entries = seaLevel.mapIndexed { index, value ->
             Entry(index.toFloat(), value.toFloat())
         }
 
         val dataSet = LineDataSet(entries, "Nível do Mar (m)")
-        dataSet.color = Color.parseColor("#4CAF50") // Verde
-        dataSet.setCircleColor(Color.parseColor("#4CAF50"))
+        dataSet.color = Color.parseColor("#4CAF50")
         dataSet.lineWidth = 3f
         dataSet.circleRadius = 4f
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#4CAF50")
         dataSet.fillAlpha = 30
         dataSet.valueTextSize = 10f
+        dataSet.setDrawCircles(false)
 
         val lineData = LineData(dataSet)
         chartSeaLevel.data = lineData
 
-        setupChart(chartSeaLevel, timeLabels, "Nível do Mar (m)")
+        setupChart(chartSeaLevel, time)
     }
 
-    private fun updateSSTChart(timeLabels: List<String>, sst: List<Double>) {
+    private fun updateSSTChart(time: List<String>, sst: List<Double>) {
         val entries = sst.mapIndexed { index, value ->
             Entry(index.toFloat(), value.toFloat())
         }
 
         val dataSet = LineDataSet(entries, "Temperatura (°C)")
-        dataSet.color = Color.parseColor("#FF5722") // Vermelho/Laranja
-        dataSet.setCircleColor(Color.parseColor("#FF5722"))
+        dataSet.color = Color.parseColor("#FF5722")
         dataSet.lineWidth = 3f
         dataSet.circleRadius = 4f
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#FF5722")
         dataSet.fillAlpha = 30
         dataSet.valueTextSize = 10f
+        dataSet.setDrawCircles(false)
 
         val lineData = LineData(dataSet)
         chartSST.data = lineData
 
-        setupChart(chartSST, timeLabels, "Temperatura da Superfície do Mar (°C)")
+        setupChart(chartSST, time)
     }
 
-    private fun setupChart(chart: LineChart, timeLabels: List<String>, title: String) {
-        // Configurar eixo X (horizontal)
+    private fun setupChart(chart: LineChart, time: List<String>) {
         val xAxis = chart.xAxis
         xAxis.position = XAxis.XAxisPosition.BOTTOM
         xAxis.granularity = 1f
         xAxis.setDrawGridLines(true)
         xAxis.gridColor = Color.LTGRAY
+        xAxis.setDrawLabels(true)
+        xAxis.textSize = 10f
 
-        // Mostrar apenas alguns horários para não poluir
-        val step = maxOf(1, timeLabels.size / 8) // Mostrar ~8 labels
-        val filteredLabels = timeLabels.filterIndexed { index, _ -> index % step == 0 }
-        xAxis.labelCount = filteredLabels.size
         xAxis.valueFormatter = object : IndexAxisValueFormatter() {
             override fun getFormattedValue(value: Float): String {
                 val index = value.toInt()
-                return if (index >= 0 && index < timeLabels.size && index % step == 0) {
-                    timeLabels[index]
-                } else ""
+                if (index >= 0 && index < time.size) {
+                    val originalTime = time[index]
+
+                    try {
+                        val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm", Locale.getDefault())
+                        val date = inputFormat.parse(originalTime)
+                        val calendar = Calendar.getInstance()
+                        calendar.time = date ?: Date()
+
+                        val day = calendar.get(Calendar.DAY_OF_MONTH)
+                        val monthValue = calendar.get(Calendar.MONTH) + 1
+
+                        val monthName = when (monthValue) {
+                            1 -> "jan"; 2 -> "fev"; 3 -> "mar"; 4 -> "abr"
+                            5 -> "mai"; 6 -> "jun"; 7 -> "jul"; 8 -> "ago"
+                            9 -> "set"; 10 -> "out"; 11 -> "nov"; 12 -> "dez"
+                            else -> "mês$monthValue"
+                        }
+
+                        return "$day $monthName"
+
+                    } catch (e: Exception) {
+                        Log.e("Chart", "Erro ao formatar data: ${e.message}")
+                        return "Data $index"
+                    }
+                }
+                return ""
             }
         }
 
-        // Configurar eixo Y (vertical)
+        xAxis.setLabelCount(6, false)
+        xAxis.setAvoidFirstLastClipping(true)
+        xAxis.spaceMin = 0.5f
+        xAxis.spaceMax = 0.5f
+
+
+        // axis Y
         chart.axisRight.isEnabled = false
         val leftAxis = chart.axisLeft
         leftAxis.setDrawGridLines(true)
         leftAxis.gridColor = Color.LTGRAY
         leftAxis.textColor = Color.DKGRAY
 
-        // Configurações gerais do gráfico
-        chart.description.isEnabled = false // Remover descrição padrão
+        // General configuration
+        chart.description.isEnabled = false
         chart.legend.isEnabled = true
         chart.legend.textSize = 12f
         chart.setTouchEnabled(true)
@@ -248,14 +271,20 @@ class MainActivity : AppCompatActivity() {
         chart.setScaleEnabled(true)
         chart.setPinchZoom(true)
         chart.setDrawGridBackground(false)
-        chart.setBackgroundColor(Color.WHITE)
 
-        // Adicionar margem interna
-        chart.setExtraOffsets(10f, 10f, 10f, 20f)
+        val isDarkTheme = resources.configuration.uiMode and
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
 
-        // Animar gráfico
+        chart.setBackgroundColor(if (isDarkTheme) Color.parseColor("#0c0c1c") else Color.parseColor("#d8d9e6"))
+        val textColor = if (isDarkTheme) Color.WHITE else Color.DKGRAY
+        chart.legend.textColor = textColor
+        chart.axisLeft.textColor = textColor
+        chart.xAxis.textColor = textColor
+
+        chart.setExtraOffsets(10f, 10f, 10f, 60f)
+
         chart.animateX(1000)
-        chart.invalidate() // Refresh do gráfico
+        chart.invalidate()
     }
-
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:layout_marginBottom="4dp"
+        >
+
+        <!-- Nome da   Localidade -->
+        <TextView
+            android:id="@+id/tv_nome_localidade"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:text="Nome da Localidade"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="4dp"
+            android:clickable="true"
+            android:foreground="?android:attr/selectableItemBackground"/>
+
+        <!-- Latitude -->
+        <TextView
+            android:id="@+id/tv_latitude"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="-23.5505"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:padding="4dp" />
+
+        <!-- Longitude -->
+        <TextView
+            android:id="@+id/tv_longitude"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="-46.6333"
+            android:textSize="12sp"
+            android:gravity="center"
+            android:padding="4dp" />
+
+        <!-- Botões Editar e Excluir -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/btn_editar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/edit_button"
+                android:src="@drawable/ic_edit"
+                android:layout_marginEnd="4dp"
+                android:contentDescription="Editar" />
+
+            <ImageButton
+                android:id="@+id/btn_excluir"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/delete_button"
+                android:src="@drawable/ic_delete"
+                android:contentDescription="Excluir"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
