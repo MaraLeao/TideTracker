@@ -110,6 +110,8 @@
             android:layout_height="49dp"
             android:layout_margin="20dp"
             android:text="+  Adicionar nova localidade"
+            android:textStyle="bold"
+            android:textColor="@color/white"
             android:backgroundTint="#787a8a"/>
 
     </LinearLayout>

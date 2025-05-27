@@ -112,10 +112,10 @@ class MainActivity : AppCompatActivity() {
                             val currentSeaLevel = seaLevel?.firstOrNull()
                             val currentSST = sst?.firstOrNull()
 
-                            waveHeightTextView.text = "${currentWaveHeight ?: "N/A"} m"
-                            wavePeriodTextView.text = "${currentWavePeriod ?: "N/A"} s"
-                            seaLevelHeightTextView.text = "${currentSeaLevel ?: "N/A"} m"
-                            surfaceTempTextView.text = "${currentSST ?: "N/A"} °C"
+                            waveHeightTextView.text = "${currentWaveHeight ?: "N/A"}m"
+                            wavePeriodTextView.text = "${currentWavePeriod ?: "N/A"}s"
+                            seaLevelHeightTextView.text = "${currentSeaLevel ?: "N/A"}m"
+                            surfaceTempTextView.text = "${currentSST ?: "N/A"}°C"
 
                             updateChart(time, waveHeight, seaLevel, sst)
                         }
