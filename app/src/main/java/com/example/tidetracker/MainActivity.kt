@@ -113,14 +113,12 @@ class MainActivity : AppCompatActivity() {
                     if (response.isSuccessful) {
                         val data = response.body()
                         data?.let {
-                            // VERSÃO SIMPLIFICADA - apenas o essencial
-                            Log.d("API_DEBUG", "=== TESTE SIMPLES ===")
-                            Log.d("API_DEBUG", "Coordenadas: $latitude, $longitude")
+                            Log.d("API_DEBUG", "=== SIMPLE TEST ===")
+                            Log.d("API_DEBUG", "Coordinates: $latitude, $longitude")
 
 
                             var hasValidData = true
 
-                            Log.w("MainActivity", "${it.hourly.wave_height}")
                             it.hourly.wave_height?.forEach { value ->
                                 if (value == null) {
                                     hasValidData = false
@@ -136,7 +134,7 @@ class MainActivity : AppCompatActivity() {
                                 msg.visibility = View.VISIBLE
                                 informPrincipal.visibility = View.GONE
                                 informSecond.visibility = View.GONE
-                                Log.w("MainActivity", "Dados insuficientes ou inexistentes para a localização")
+                                Log.w("MainActivity", " Insufficient or non-existent data for location")
 
                             } else {
                                 informPrincipal.visibility = View.VISIBLE
@@ -150,7 +148,6 @@ class MainActivity : AppCompatActivity() {
                                 val seaLevel = it.hourly.sea_level_height_msl
                                 val sst = it.hourly.sea_surface_temperature
 
-                                // CORREÇÃO: Função helper para conversão segura
                                 fun safeDouble(value: Any?): Double? {
                                     return try {
                                         value?.let {
@@ -165,13 +162,11 @@ class MainActivity : AppCompatActivity() {
                                     }
                                 }
 
-                                // Acesso seguro aos primeiros valores - CORREÇÃO AQUI
                                 val currentWaveHeight = waveHeight?.firstOrNull()?.let { safeDouble(it) }
                                 val currentWavePeriod = wavePeriod?.firstOrNull()?.let { safeDouble(it) }
                                 val currentSeaLevel = seaLevel?.firstOrNull()?.let { safeDouble(it) }
                                 val currentSST = sst?.firstOrNull()?.let { safeDouble(it) }
 
-                                // Formatação segura para exibição
                                 waveHeightTextView.text = if (currentWaveHeight != null) {
                                     "${String.format("%.1f", currentWaveHeight)}m"
                                 } else {
@@ -196,7 +191,6 @@ class MainActivity : AppCompatActivity() {
                                     "N/A"
                                 }
 
-                                // CRUCIAL: Filtrar valores null antes de passar para updateChart - CORREÇÃO
                                 val validTime = time ?: emptyList()
                                 val validWaveHeight = waveHeight?.mapNotNull { safeDouble(it) } ?: emptyList()
                                 val validSeaLevel = seaLevel?.mapNotNull { safeDouble(it) } ?: emptyList()
@@ -206,7 +200,6 @@ class MainActivity : AppCompatActivity() {
                                 Log.d("API_DEBUG", "Passing to chart - validSeaLevel size: ${validSeaLevel.size}")
                                 Log.d("API_DEBUG", "Passing to chart - validSST size: ${validSST.size}")
 
-                                // Só chama updateChart se tiver dados válidos
                                 if (validWaveHeight.isNotEmpty() || validSeaLevel.isNotEmpty() || validSST.isNotEmpty()) {
                                     try {
                                         updateChart(validTime, validWaveHeight, validSeaLevel, validSST)

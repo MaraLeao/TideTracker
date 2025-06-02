@@ -14,10 +14,10 @@
         android:orientation="vertical"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp"
-        >
+        tools:layout_editor_absoluteY="1dp">
 
         <LinearLayout
+            android:id="@+id/header"
             android:paddingTop="15dp"
             android:paddingBottom="15dp"
             android:layout_width="match_parent"
@@ -58,7 +58,7 @@
             android:orientation="vertical"
             android:gravity="center">
 
-
+            <!--longitude and latitude div-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -114,6 +114,7 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!--principal informations  -->
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -259,305 +260,305 @@
                                 android:gravity="center"
                                 android:layout_marginStart="2dp"/>
                         </LinearLayout>
-
                     </LinearLayout>
-
                 </LinearLayout>
-
             </LinearLayout>
 
+            <!-- cards -->
             <LinearLayout
                 android:id="@+id/informSecond"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Previsões"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginTop="24dp"
-                android:layout_marginBottom="16dp"
-                android:textColor="@color/title_color"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Altura das ondas"
-                android:gravity="center"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="10dp">
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="Previsões"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="16dp"
+                    android:textColor="@color/title_color"/>
 
-                    <!-- Primeiro Grafico mostrando durante o dia-->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="280dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="16dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardUseCompatPadding="true">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/cards"
-                            android:orientation="vertical"
-                            android:padding="12dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                android:gravity="center"
-                                android:text="Hoje"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/chart_wave_height_day"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <!--Segundo grafico mostrando durante a semana-->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="280dp"
-                        android:layout_marginBottom="16dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardUseCompatPadding="true">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/cards"
-                            android:orientation="vertical"
-                            android:padding="12dp">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginBottom="8dp"
-                                android:gravity="center"
-                                android:text="Durante a semana"
-                                android:textSize="16sp"
-                                android:textStyle="bold" />
-
-                            <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/chart_wave_height"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Nível do Mar"
-                android:gravity="center"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginBottom="10dp">
-
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:text="Altura das ondas"
+                    android:gravity="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"/>
 
-                    <!-- Gráfico de Nível do Mar -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="280dp"
-                        android:layout_marginBottom="16dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardUseCompatPadding="true"
-                        android:layout_marginLeft="10dp"
-                        >
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:padding="12dp"
-                            android:background="@color/cards">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Hoje"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:layout_marginBottom="8dp" />
-
-                            <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/chart_sea_level_day"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <!-- Gráfico de Nível do Mar -->
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="280dp"
-                        android:layout_marginBottom="16dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardUseCompatPadding="true"
-                        >
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:padding="12dp"
-                            android:background="@color/cards">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Durante a semana"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:layout_marginBottom="8dp" />
-
-                            <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/chart_sea_level"
-                                android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </HorizontalScrollView>
-
-            <!-- Gráfico de Temperatura da Superfície do Mar -->
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Temperatura da Superfície"
-                android:gravity="center"
-                android:textSize="18dp"
-                android:textStyle="bold"
-                android:layout_marginBottom="5dp"/>
-
-            <HorizontalScrollView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <LinearLayout
+                <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="10dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="280dp"
-                        android:layout_marginBottom="16dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardUseCompatPadding="true">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:padding="12dp"
-                            android:background="@color/cards"                    >
+                        <!-- daily chart wave height-->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="350dp"
+                            android:layout_height="280dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardUseCompatPadding="true">
 
-                            <TextView
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Hoje"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:layout_marginBottom="8dp" />
+                                android:layout_height="match_parent"
+                                android:background="@color/cards"
+                                android:orientation="vertical"
+                                android:padding="12dp">
 
-                            <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/chart_sst_day"
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:gravity="center"
+                                    android:text="Hoje"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
+
+                                <com.github.mikephil.charting.charts.LineChart
+                                    android:id="@+id/chart_wave_height_day"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1" />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <!-- weekly chart wave height -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="350dp"
+                            android:layout_height="280dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardUseCompatPadding="true">
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
+                                android:layout_height="match_parent"
+                                android:background="@color/cards"
+                                android:orientation="vertical"
+                                android:padding="12dp">
 
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginBottom="8dp"
+                                    android:gravity="center"
+                                    android:text="Durante a semana"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold" />
 
-                    </androidx.cardview.widget.CardView>
+                                <com.github.mikephil.charting.charts.LineChart
+                                    android:id="@+id/chart_wave_height"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1" />
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="350dp"
-                        android:layout_height="280dp"
-                        android:layout_marginBottom="16dp"
-                        app:cardCornerRadius="12dp"
-                        app:cardUseCompatPadding="true">
+                            </LinearLayout>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="vertical"
-                            android:padding="12dp"
-                            android:background="@color/cards">
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </HorizontalScrollView>
 
-                            <TextView
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nível do Mar"
+                    android:gravity="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"/>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_marginBottom="10dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- daily chart sea level -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="350dp"
+                            android:layout_height="280dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardUseCompatPadding="true"
+                            android:layout_marginLeft="10dp"
+                            >
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:text="Durante a Semana"
-                                android:textSize="16sp"
-                                android:textStyle="bold"
-                                android:gravity="center"
-                                android:layout_marginBottom="8dp" />
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:padding="12dp"
+                                android:background="@color/cards">
 
-                            <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/chart_sst"
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hoje"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:gravity="center"
+                                    android:layout_marginBottom="8dp" />
+
+                                <com.github.mikephil.charting.charts.LineChart
+                                    android:id="@+id/chart_sea_level_day"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1" />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <!-- weekly chart sea level -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="350dp"
+                            android:layout_height="280dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardUseCompatPadding="true"
+                            >
+
+                            <LinearLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="0dp"
-                                android:layout_weight="1" />
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:padding="12dp"
+                                android:background="@color/cards">
 
-                        </LinearLayout>
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Durante a semana"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:gravity="center"
+                                    android:layout_marginBottom="8dp" />
 
-                    </androidx.cardview.widget.CardView>
-                </LinearLayout>
-            </HorizontalScrollView>
+                                <com.github.mikephil.charting.charts.LineChart
+                                    android:id="@+id/chart_sea_level"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1" />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </HorizontalScrollView>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Temperatura da Superfície"
+                    android:gravity="center"
+                    android:textSize="18dp"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="5dp"/>
+
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <!-- daily chart sea temperature -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="350dp"
+                            android:layout_height="280dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardUseCompatPadding="true">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:padding="12dp"
+                                android:background="@color/cards"                    >
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hoje"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:gravity="center"
+                                    android:layout_marginBottom="8dp" />
+
+                                <com.github.mikephil.charting.charts.LineChart
+                                    android:id="@+id/chart_sst_day"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1" />
+
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <!-- weekly chart sea temperature -->
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="350dp"
+                            android:layout_height="280dp"
+                            android:layout_marginBottom="16dp"
+                            app:cardCornerRadius="12dp"
+                            app:cardUseCompatPadding="true">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical"
+                                android:padding="12dp"
+                                android:background="@color/cards">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Durante a Semana"
+                                    android:textSize="16sp"
+                                    android:textStyle="bold"
+                                    android:gravity="center"
+                                    android:layout_marginBottom="8dp" />
+
+                                <com.github.mikephil.charting.charts.LineChart
+                                    android:id="@+id/chart_sst"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1" />
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
+                </HorizontalScrollView>
             </LinearLayout>
         </LinearLayout>
+
+        <!-- Text View for message -->
         <TextView
             android:id="@+id/msg_beach_nf"
             android:layout_width="match_parent"
@@ -566,5 +567,4 @@
             android:textSize="25dp"
             android:gravity="center"/>
     </LinearLayout>
-
 </ScrollView>
