@@ -2,7 +2,6 @@ package com.example.tidetracker
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -13,13 +12,11 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-
 
 class LocalsActivity : AppCompatActivity() {
     private lateinit var viewLocals: LinearLayout
@@ -97,7 +94,7 @@ class LocalsActivity : AppCompatActivity() {
                         showLocals()
 
                         Toast.makeText(this, "Localidade adicionada!", Toast.LENGTH_SHORT).show()
-                        Log.e("LocalActivity", "Lista de locais salvos: ${listLocals}")
+                        Log.d("LocalActivity", "Lista de locais salvos: ${listLocals}")
                     } catch (e: NumberFormatException) {
                         Toast.makeText(this, "Latitude e longitude devem ser números válidos", Toast.LENGTH_SHORT).show()
                     }
@@ -127,7 +124,6 @@ class LocalsActivity : AppCompatActivity() {
             val itemView = LayoutInflater.from(this).inflate(R.layout.item_local, viewLocals, false)
 
             itemView.setOnClickListener {
-                Log.d("LocalsActivity", "Clicou no item: ${localidade.nome}")
                 val intent = Intent(this@LocalsActivity, MainActivity::class.java)
                 intent.putExtra("latitude", localidade.latitude)
                 intent.putExtra("longitude", localidade.longitude)
@@ -155,8 +151,6 @@ class LocalsActivity : AppCompatActivity() {
             }
 
             viewLocals.addView(itemView)
-
-
 
         }
     }
@@ -212,7 +206,6 @@ class LocalsActivity : AppCompatActivity() {
             .setTitle("Excluir Localidade")
             .setMessage("Deseja realmente excluir a localidade \"${localidade.nome}\"?")
             .setPositiveButton("Sim") { _, _ ->
-                // Remover da lista
                 listLocals.removeAt(index)
 
                 saveLocals()
@@ -225,8 +218,6 @@ class LocalsActivity : AppCompatActivity() {
     }
 
 }
-
-
 
 data class Localidade(
     var nome: String,
