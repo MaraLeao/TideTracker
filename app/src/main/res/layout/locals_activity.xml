@@ -111,8 +111,8 @@
             android:layout_margin="20dp"
             android:text="+  Adicionar nova localidade"
             android:textStyle="bold"
-            android:textColor="@color/white"
-            android:backgroundTint="#787a8a"/>
+            android:textColor="@color/text_body"
+            android:backgroundTint="@color/cards"/>
 
     </LinearLayout>
 </ScrollView>

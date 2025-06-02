@@ -14,7 +14,6 @@
         android:foreground="?android:attr/selectableItemBackground"
         >
 
-        <!-- Nome da   Localidade -->
         <TextView
             android:id="@+id/tv_nome_localidade"
             android:layout_width="0dp"
@@ -26,7 +25,6 @@
             android:padding="4dp"
             android:clickable="true" />
 
-        <!-- Latitude -->
         <TextView
             android:id="@+id/tv_latitude"
             android:layout_width="0dp"
@@ -37,7 +35,6 @@
             android:gravity="center"
             android:padding="4dp"/>
 
-        <!-- Longitude -->
         <TextView
             android:id="@+id/tv_longitude"
             android:layout_width="0dp"
@@ -48,7 +45,6 @@
             android:gravity="center"
             android:padding="4dp" />
 
-        <!-- Botões Editar e Excluir -->
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
