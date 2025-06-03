@@ -249,6 +249,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+
+
     private fun updateWaveHeightChart(time: List<String>, waveHeight: List<Double>) {
         val entries = waveHeight.mapIndexedNotNull { index, value ->
             Entry(index.toFloat(), value.toFloat())
@@ -261,14 +263,12 @@ class MainActivity : AppCompatActivity() {
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#2196F3")
         dataSet.fillAlpha = 30
-        dataSet.valueTextSize = 10f
+        dataSet.valueTextSize = 9f
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(true)
-        dataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String? {
-                return String.format("%.2f", value)
-            }
-        }
+
+        val valueTextColor = if (isDarkTheme()) Color.WHITE else Color.BLACK
+        dataSet.valueTextColor = valueTextColor
 
         val lineData = LineData(dataSet)
         chartWaveHeight.data = lineData
@@ -288,14 +288,12 @@ class MainActivity : AppCompatActivity() {
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#2196F3")
         dataSet.fillAlpha = 30
-        dataSet.valueTextSize = 10f
+        dataSet.valueTextSize = 9f
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(true)
-        dataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String? {
-                return String.format("%.2f", value)
-            }
-        }
+
+        val valueTextColor = if (isDarkTheme()) Color.parseColor("#858585") else Color.BLACK
+        dataSet.valueTextColor = valueTextColor
 
         val lineData = LineData(dataSet)
         chartWaveHeightDay.data = lineData
@@ -315,14 +313,12 @@ class MainActivity : AppCompatActivity() {
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#4CAF50")
         dataSet.fillAlpha = 30
-        dataSet.valueTextSize = 10f
+        dataSet.valueTextSize = 9f
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(true)
-        dataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String? {
-                return String.format("%.2f", value)
-            }
-        }
+
+        val valueTextColor = if (isDarkTheme()) Color.WHITE else Color.BLACK
+        dataSet.valueTextColor = valueTextColor
 
         val lineData = LineData(dataSet)
         chartSeaLevel.data = lineData
@@ -342,14 +338,23 @@ class MainActivity : AppCompatActivity() {
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#4CAF50")
         dataSet.fillAlpha = 30
-        dataSet.valueTextSize = 10f
+        dataSet.valueTextSize = 9f
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(true)
+
         dataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String? {
-                return String.format("%.2f", value)
+            override fun getFormattedValue(value: Float): String {
+                val index = entries.indexOfFirst { it.y == value }
+                return if (index >= 0 && index % 2 == 0) {
+                    String.format("%.2f", value)
+                } else {
+                    ""
+                }
             }
         }
+
+        val valueTextColor = if (isDarkTheme()) Color.parseColor("#858585") else Color.BLACK
+        dataSet.valueTextColor = valueTextColor
 
         val lineData = LineData(dataSet)
         chartSeaLevelDay.data = lineData
@@ -369,14 +374,12 @@ class MainActivity : AppCompatActivity() {
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#FF5722")
         dataSet.fillAlpha = 30
-        dataSet.valueTextSize = 10f
+        dataSet.valueTextSize = 9f
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(true)
-        dataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String? {
-                return String.format("%.1f", value)
-            }
-        }
+
+        val valueTextColor = if (isDarkTheme()) Color.WHITE else Color.BLACK
+        dataSet.valueTextColor = valueTextColor
 
         val lineData = LineData(dataSet)
         chartSST.data = lineData
@@ -396,14 +399,23 @@ class MainActivity : AppCompatActivity() {
         dataSet.setDrawFilled(true)
         dataSet.fillColor = Color.parseColor("#FF5722")
         dataSet.fillAlpha = 30
-        dataSet.valueTextSize = 10f
+        dataSet.valueTextSize = 9f
         dataSet.setDrawCircles(false)
         dataSet.setDrawValues(true)
+
         dataSet.valueFormatter = object : ValueFormatter() {
-            override fun getFormattedValue(value: Float): String? {
-                return String.format("%.1f", value)
+            override fun getFormattedValue(value: Float): String {
+                val index = entries.indexOfFirst { it.y == value }
+                return if (index >= 0 && index % 2 == 0) {
+                    String.format("%.2f", value)
+                } else {
+                    ""
+                }
             }
         }
+
+        val valueTextColor = if (isDarkTheme()) Color.parseColor("#858585") else Color.BLACK
+        dataSet.valueTextColor = valueTextColor
 
         val lineData = LineData(dataSet)
         chartSSTDay.data = lineData
@@ -454,6 +466,13 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    private fun isDarkTheme(): Boolean {
+        val darkTheme = resources.configuration.uiMode and
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+        return darkTheme
+    }
+
     data class DailyFilteredData(
         val time: List<String>,
         val waveHeight: List<Double>?,
@@ -501,8 +520,8 @@ class MainActivity : AppCompatActivity() {
                         }
 
                     } catch (e: Exception) {
-                            Log.e("Chart", "Erro ao formatar data: ${e.message}")
-                            return "Data $index"
+                        Log.e("Chart", "Erro ao formatar data: ${e.message}")
+                        return "Data $index"
                     }
                 }
                 return ""
@@ -540,12 +559,8 @@ class MainActivity : AppCompatActivity() {
         chart.setPinchZoom(true)
         chart.setDrawGridBackground(false)
 
-        val isDarkTheme = resources.configuration.uiMode and
-                android.content.res.Configuration.UI_MODE_NIGHT_MASK ==
-                android.content.res.Configuration.UI_MODE_NIGHT_YES
-
-        chart.setBackgroundColor(if (isDarkTheme) Color.parseColor("#232323") else Color.parseColor("#EDEDED"))
-        val textColor = if (isDarkTheme) Color.WHITE else Color.DKGRAY
+        chart.setBackgroundColor(if (isDarkTheme()) Color.parseColor("#232323") else Color.parseColor("#EDEDED"))
+        val textColor = if (isDarkTheme()) Color.WHITE else Color.DKGRAY
         chart.legend.textColor = textColor
         chart.axisLeft.textColor = textColor
         chart.xAxis.textColor = textColor
